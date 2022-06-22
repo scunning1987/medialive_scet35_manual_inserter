@@ -1,0 +1,45 @@
+<html>
+<title>SCTE35 Inserter</title>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet">
+    <script src="functions.js"></script>
+</head>
+<body>
+<h1>MediaLive SCTE35 Inserter</h1>
+<br/>
+
+<!-- Region Dropdown -->
+<label for="regiondrop">Region:</label>
+<select id="regiondrop" name="emlregion" onchange="get_channel_list()">
+    <option value="us-west-2">us-west-2</option>
+    <option value="us-east-1">us-east-1</option>
+    <option value="us-west-1">us-west-1</option>
+    <option value="us-east-2">us-east-2</option>
+</select>
+
+<!-- Channel list dropdown (populated by API response) -->
+<label for="channeldrop">Channel:</label>
+<select id="channeldrop" name="emlchannel" onchange="get_channel_list()">
+    <option value="1">000001</option>
+    <option value="2">000002</option>
+    <option value="3">000003</option>
+    <option value="4">000004</option>
+</select>
+
+<!-- Break duration dropdown -->
+<label for="breakdur">Break Duration:</label>
+<select id="breakdur" name="breakdur">
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+    <option value="60">60</option>
+    <option value="90">90</option>
+    <option value="120">120</option>
+</select>
+
+<!-- INSERT BUTTON (confirmation presented in alert box from API response -->
+<button class="control_buttons" id="start" onclick="insert_scte35()">INSERT</button>
+
+</body>
+</html>
