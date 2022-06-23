@@ -10,25 +10,25 @@
 <br/>
 
 <!-- Region Dropdown -->
-<label for="regiondrop">Region:</label>
+<label for="regiondrop">Region: </label>
 <select id="regiondrop" name="emlregion" onchange="get_channel_list()">
+    <option value="none" selected disabled hidden>Please select an AWS region</option>
     <option value="us-west-2">us-west-2</option>
     <option value="us-east-1">us-east-1</option>
     <option value="us-west-1">us-west-1</option>
     <option value="us-east-2">us-east-2</option>
 </select>
 
+<br/><br/>
+
 <!-- Channel list dropdown (populated by API response) -->
-<label for="channeldrop">Channel:</label>
-<select id="channeldrop" name="emlchannel" onchange="get_channel_list()">
-    <option value="1">000001</option>
-    <option value="2">000002</option>
-    <option value="3">000003</option>
-    <option value="4">000004</option>
-</select>
+<label for="channeldrop">Channel: </label>
+<select id="channeldrop" name="emlchannel""></select>
+
+<br/><br/>
 
 <!-- Break duration dropdown -->
-<label for="breakdur">Break Duration:</label>
+<label for="breakdur">Break Duration (s): </label>
 <select id="breakdur" name="breakdur">
     <option value="15">15</option>
     <option value="30">30</option>
@@ -37,6 +37,8 @@
     <option value="90">90</option>
     <option value="120">120</option>
 </select>
+
+<br/><br/>
 
 <!-- INSERT BUTTON (confirmation presented in alert box from API response -->
 <button class="control_buttons" id="start" onclick="insert_scte35()">INSERT</button>
