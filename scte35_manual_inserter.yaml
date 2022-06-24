@@ -138,18 +138,13 @@ Resources:
       Runtime: python3.8
       Handler: index.lambda_handler
       Timeout: 10
-      MemorySize: 10240
+      MemorySize: 128
       Code:
         S3Bucket: !Ref S3Bucket
         S3Key: !GetAtt FileMover.scte35-manual-insertion
-      Environment:
-        Variables:
-          VideoPipelineDatabase: !Ref VideoPipelineDatabase
       Tags:
         - Key: StackName
           Value: !Ref AWS::StackName
-        - Key: Version
-          Value: 2
     DependsOn:
       - S3Bucket
       - LambdaRole
@@ -387,7 +382,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - !Ref 'AWS::Region'
             - :lambda:path/2015-03-31/functions/
-            - !GetAtt MediaLiveControlConfig.Arn
+            - !GetAtt Scte35ManualInserterLambda.Arn
             - /invocations
       MethodResponses:
         - StatusCode: 200
@@ -466,9 +461,7 @@ Resources:
 Outputs:
   DashboardUrl:
     Description: Dashboard URL for MediaLive control
-    #Value: !Sub https://${S3Bucket}.s3.${AWS::Region}.amazonaws.com/${FileMover.ui}
-    #Value: !Sub https://${CloudFrontDistribution.DomainName}/${FileMover.ui}
-    Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/dashboard/${S3Bucket}/${FileMover.ui}
+    Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/ui/${S3Bucket}/${FileMover.ui}
 
   APIEndpointURLGetSample:
     Description: API Endpoint for getting sample configuration, method - GET
@@ -510,9 +503,3 @@ Outputs:
   MediaLiveAccessRoleArn:
     Description: This is the role that should be used by MediaLive
     Value: !GetAtt MediaLiveAccessRole.Arn
-
-
-  #APIEndpointURLCTRL:
-  #  Description: API Endpoint to control the MediaLive channels. This URL is needed when updating the config
-  #  Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/dashboard-ctrl
-
