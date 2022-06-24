@@ -363,55 +363,10 @@ Resources:
         - Key: StackName
           Value: !Ref AWS::StackName
 
-  ProxyPlusResourceCtrl:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !GetAtt ApiGateway.RootResourceId
-      PathPart: 'dashboard-ctrl'
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-  ProxyPlusResourceCfgRoot:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !GetAtt ApiGateway.RootResourceId
-      PathPart: 'dashboard-cfg'
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-  ProxyPlusResourceWorkflow:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !GetAtt ApiGateway.RootResourceId
-      PathPart: 'dashboard-workflow'
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-  UIResourceRoot:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !GetAtt ApiGateway.RootResourceId
-      PathPart: 'dashboard'
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
   ProxyPlusResourceUIProxy:
     Type: AWS::ApiGateway::Resource
     Properties:
       ParentId: !Ref UIResourceRoot
-      PathPart: '{proxy+}'
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-  ProxyPlusResourceCfgProxy:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !Ref ProxyPlusResourceCfgRoot
       PathPart: '{proxy+}'
       RestApiId: !Ref ApiGateway
     DependsOn:
@@ -438,139 +393,7 @@ Resources:
         - StatusCode: 200
           ResponseModels:
             application/json: !Ref EmptyApiModel
-      ResourceId: !Ref ProxyPlusResourceCfgProxy
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-  UIMethods:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: ANY
-      Integration:
-        #Credentials: !GetAtt ApiGatewayRole.Arn
-        IntegrationHttpMethod: POST
-        IntegrationResponses:
-          - StatusCode: '200'
-        Type: AWS_PROXY
-        Uri: !Join
-          - ''
-          - - 'arn:aws:apigateway:'
-            - !Ref 'AWS::Region'
-            - :lambda:path/2015-03-31/functions/
-            - !GetAtt UIAccessProxy.Arn
-            - /invocations
       ResourceId: !Ref ProxyPlusResourceUIProxy
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-  GetMethod:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: GET
-      Integration:
-        #Credentials: !GetAtt ApiGatewayRole.Arn
-        IntegrationHttpMethod: POST
-        IntegrationResponses:
-          - StatusCode: '200'
-        Type: AWS_PROXY
-        Uri: !Join
-          - ''
-          - - 'arn:aws:apigateway:'
-            - !Ref 'AWS::Region'
-            - :lambda:path/2015-03-31/functions/
-            - !GetAtt MediaLiveControlFunctions.Arn
-            - /invocations
-      MethodResponses:
-        - StatusCode: 200
-          ResponseModels:
-            application/json: !Ref EmptyApiModel
-      ResourceId: !Ref ProxyPlusResourceCtrl
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-
-  GetMethodForWorkflow:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: GET
-      Integration:
-        #Credentials: !GetAtt ApiGatewayRole.Arn
-        IntegrationHttpMethod: POST
-        IntegrationResponses:
-          - StatusCode: '200'
-        Type: AWS_PROXY
-        Uri: !Join
-          - ''
-          - - 'arn:aws:apigateway:'
-            - !Ref 'AWS::Region'
-            - :lambda:path/2015-03-31/functions/
-            - !GetAtt StepAPIHandler.Arn
-            - /invocations
-      MethodResponses:
-        - StatusCode: 200
-          ResponseModels:
-            application/json: !Ref EmptyApiModel
-      ResourceId: !Ref ProxyPlusResourceWorkflow
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-  PutMethodForWorkflow:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: PUT
-      Integration:
-        #Credentials: !GetAtt ApiGatewayRole.Arn
-        IntegrationHttpMethod: POST
-        IntegrationResponses:
-          - StatusCode: '200'
-        Type: AWS_PROXY
-        Uri: !Join
-          - ''
-          - - 'arn:aws:apigateway:'
-            - !Ref 'AWS::Region'
-            - :lambda:path/2015-03-31/functions/
-            - !GetAtt StepAPIHandler.Arn
-            - /invocations
-      MethodResponses:
-        - StatusCode: 200
-          ResponseModels:
-            application/json: !Ref EmptyApiModel
-      ResourceId: !Ref ProxyPlusResourceWorkflow
-      RestApiId: !Ref ApiGateway
-    DependsOn:
-      - ApiGateway
-
-  PutMethod:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: PUT
-      Integration:
-        #Credentials: !GetAtt ApiGatewayRole.Arn
-        IntegrationHttpMethod: POST
-        IntegrationResponses:
-          - StatusCode: '200'
-        Type: AWS_PROXY
-        Uri: !Join
-          - ''
-          - - 'arn:aws:apigateway:'
-            - !Ref 'AWS::Region'
-            - :lambda:path/2015-03-31/functions/
-            - !GetAtt MediaLiveControlFunctions.Arn
-            - /invocations
-      MethodResponses:
-        - StatusCode: 200
-          ResponseModels:
-            application/json: !Ref EmptyApiModel
-      ResourceId: !Ref ProxyPlusResourceCtrl
       RestApiId: !Ref ApiGateway
     DependsOn:
       - ApiGateway
@@ -601,7 +424,7 @@ Resources:
             method.response.header.Access-Control-Allow-Headers: false
             method.response.header.Access-Control-Allow-Methods: false
             method.response.header.Access-Control-Allow-Origin: true
-      ResourceId: !Ref ProxyPlusResourceCtrl
+      ResourceId: !Ref ProxyPlusResourceUIProxy
       RestApiId: !Ref ApiGateway
     DependsOn:
       - ApiGateway
@@ -621,12 +444,10 @@ Resources:
   Deployment:
     Type: AWS::ApiGateway::Deployment
     Properties:
-      Description: Production Deployment of Api Endpoint
+      Description: Production Deployment of Api Endpoint for SCTE35 insertion
       RestApiId: !Ref ApiGateway
     DependsOn:
       - AnyMethod
-      - GetMethod
-      - PutMethod
       - ApiGateway
 
   ApiStage:
@@ -637,60 +458,6 @@ Resources:
       StageName: v1
     DependsOn:
       - ApiGateway
-
-    #################
-    ## EventBridge
-    #################
-
-  DailyScheduleCleanup:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: This Event Rule will run at midnight every night to cleanup schedule events in MediaLive Channels that are part of the workflow
-      Name: MediaLiveScheduleCleanup
-      RoleArn: !GetAtt LambdaRole.Arn
-      State: ENABLED
-      ScheduleExpression: cron(0 0 * * ? *)
-      Targets:
-        - Arn: !GetAtt MediaLiveScheduleCleanup.Arn
-          Id: LambdaForMediaLiveCleanup
-          RetryPolicy:
-            MaximumRetryAttempts: 4
-            MaximumEventAgeInSeconds: 600
-    DependsOn:
-      - MediaLiveScheduleCleanup
-      - LambdaRole
-
-  StepFunctionsInitiate:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: Event Bridge to start Step Functions Workflow
-      EventPattern: {
-        "source": [
-            "aws.lambda",
-            "lambda.amazonaws.com"
-        ],
-        "detail-type": [
-            "StepFunctionsTrigger"
-        ]
-      }
-      Targets:
-        - Arn: !Sub >-
-            arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${StackName}-VideoPipeline
-          RoleArn: !GetAtt StepFunctionStartExecutionRole.Arn
-          Id: VideoPipelineAutomationStepFunctionsInitiate
-
-  MediaLiveChannelStateChange:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: Event Bridge to update status jpg image based on MediaLive channel status
-      RoleArn: !GetAtt LambdaRole.Arn
-      EventPattern: {
-        "source": ["aws.medialive"],
-        "detail-type": ["MediaLive Channel State Change"]
-      }
-      Targets:
-        - Arn: !GetAtt JpgEventOverride.Arn
-          Id: MediaLiveChannelStateChange
 
 #################################
 # Outputs
