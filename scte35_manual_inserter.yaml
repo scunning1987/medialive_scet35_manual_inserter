@@ -3,7 +3,7 @@
 ####
 ####
 ## Parameters - User Input
-Parameters:
+#Parameters:
 
 #  S3PolicyForMediaAccess:
 #    Description: Policy that gives Lambda access to customer managed S3 Bucket
@@ -11,19 +11,9 @@ Parameters:
 #    AllowedPattern: ^arn:aws:iam::.+ #(\d{12}|aws):policy/:+
 #    Default: arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
 
-  StackName:
-    Description: Name of the CF stack
-    Type: String
-
-  VodBucket:
-    Description: Please enter the bucket name where MP4 content resides and can be used as inputs to your channel
-    Type: String
-    Default: aws-elemental-demo-2021
-
-  MediaLiveScheduleCleanupTag:
-    Description: Enter a Property name here that the schedule cleanup function will look for when it runs its daily cleanup. Channels that don't have this tag will be ignored
-    Type: String
-    Default: emlauto
+#  StackName:
+#    Description: Name of the CF stack
+#    Type: String
 
 ## Resources
 Resources:
@@ -462,44 +452,3 @@ Outputs:
   DashboardUrl:
     Description: Dashboard URL for MediaLive control
     Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/ui/${S3Bucket}/${FileMover.ui}
-
-  APIEndpointURLGetSample:
-    Description: API Endpoint for getting sample configuration, method - GET
-    #Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/${ProxyPlusResourceCfgRoot.PathPart}/template
-    Value: !Join
-      - ''
-      - - 'https://'
-        - !Ref ApiGateway
-        - '.execute-api.'
-        - !Ref 'AWS::Region'
-        - '.amazonaws.com/'
-        - !Ref ApiStage
-        - '/dashboard-cfg/template'
-
-  APIEndpointURLGetConfig:
-    Description: API Endpoint for getting existing configuration, method - GET
-    Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/dashboard-cfg/existing
-
-  APIEndpointURLPutConfig:
-    Description: API Endpoint for updating existing configuration, method - PUT
-    Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/dashboard-cfg/update
-
-  ProxyThumbnailToS3PathTemplate:
-    Description: For the multiviewer, each proxy MediaLive channel should output a thumbnail to this location. Take note of the jpg location as it will be required in the channel_map.json. DO NOT PUT AN EXTENSION IN THE NAME IN MEDIALIVE OR A NAME MODIFIER
-    Value: !Sub s3://${S3Bucket}/status_thumbnails/[thumbnail-name]
-
-  LambdaRole:
-    Description: This is the Arn for the role that Lambda assumes for MediaLive and MediaConnect control functions. This may be needed in an external CloudFormation template
-    Value: !GetAtt LambdaRole.Arn
-
-  ChannelMap:
-    Description: This is the URL to access the channel map that gets loaded into the UI and has all the channel information
-    Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/dashboard/${S3Bucket}/${FileMover.channel_map}
-
-  UserInterface:
-    Description: The UI to control your channels
-    Value: !Sub https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${ApiStage}/dashboard/${S3Bucket}/${FileMover.ui}
-
-  MediaLiveAccessRoleArn:
-    Description: This is the role that should be used by MediaLive
-    Value: !GetAtt MediaLiveAccessRole.Arn
