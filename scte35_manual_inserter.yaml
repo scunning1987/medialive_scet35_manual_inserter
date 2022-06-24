@@ -361,7 +361,7 @@ Resources:
   ProxyPlusResourceUIProxy:
     Type: AWS::ApiGateway::Resource
     Properties:
-      ParentId: !Ref UIResourceRoot
+      ParentId: !GetAtt ApiGateway.RootResourceId
       PathPart: '{proxy+}'
       RestApiId: !Ref ApiGateway
     DependsOn:
