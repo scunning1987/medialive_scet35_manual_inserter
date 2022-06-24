@@ -227,7 +227,7 @@ Resources:
               apiendpoint = os.environ['APIENDPOINT']
 
               # Manifest File containning URL's on github
-              cloudformation_manifest = "https://raw.githubusercontent.com/scunning1987/medialive_multi_channel_controller/main/manifest.txt"
+              cloudformation_manifest = "https://raw.githubusercontent.com/scunning1987/medialive_scet35_manual_inserter/master/manifest.txt"
 
 
               # Get the manifest from GitHub

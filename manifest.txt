@@ -2,3 +2,4 @@
 https://raw.githubusercontent.com/scunning1987/medialive_scet35_manual_inserter/master/functions.js
 https://raw.githubusercontent.com/scunning1987/medialive_scet35_manual_inserter/master/scte35-manual-insertion.py
 https://raw.githubusercontent.com/scunning1987/medialive_scet35_manual_inserter/master/ui.html
+https://raw.githubusercontent.com/scunning1987/medialive_scet35_manual_inserter/master/manifest.txt
